@@ -10,9 +10,32 @@ export const Input = ({
   type,
   id,
   changeCallback,
+  className,
+  flipped,
   ...otherProps
 }) => {
   if (labelled) {
+    if (flipped)
+      return (
+        <RenderWithoutWrapper>
+          <input
+            id={id}
+            type={type || "text"}
+            {...otherProps}
+            onChange={changeCallback}
+            className={`${
+              type === "checkbox" || type === "radio" ? "" : "form-control"
+            } ${className || ""}`}
+          />
+          <label
+            htmlFor={id || ""}
+            id={labelId || ""}
+            className={labelClass || ""}
+          >
+            {label || null}
+          </label>
+        </RenderWithoutWrapper>
+      );
     return (
       <RenderWithoutWrapper>
         <label
@@ -27,11 +50,22 @@ export const Input = ({
           type={type || "text"}
           {...otherProps}
           onChange={changeCallback}
+          className={`${
+            type === "checkbox" || type === "radio" ? "" : "form-control"
+          } ${className || ""}`}
         />
       </RenderWithoutWrapper>
     );
   }
-  return <input type={type} {...otherProps} />;
+  return (
+    <input
+      type={type}
+      {...otherProps}
+      className={`${
+        type === "checkbox" || type === "radio" ? "" : "form-control"
+      } ${className || ""}`}
+    />
+  );
 };
 
 export default Input;

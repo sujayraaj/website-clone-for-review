@@ -2,8 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import pathOr from "lodash/fp/pathOr";
 import { getLabels } from "../../utils";
-import { WrappedInput, Input } from "../common/Input";
+import { WrappedInput } from "../common/Input";
 import { RadioGroup as QuestionTypeBuilder } from "./Components/RadioGroup";
+import Answers from "./Components/Answers";
+import SubmissionPanel from "./Components/SubmissionPanel";
+import styles from "./styles.css";
+
 import { MULTIPLE_CHOICE, PASSAGE_TYPE } from "./constants";
 
 class AddQuestion extends React.Component {
@@ -21,18 +25,29 @@ class AddQuestion extends React.Component {
   }
   render() {
     const Labels = getLabels(this.props.labels || {});
+    const commonInputWrapperProps = {
+      className: styles.section
+    };
     return (
       <form>
-        {" "}
-        <div className={`container`} role="group" aria-labelledby="pageHeading">
-          <h1 id="pageHeading">{Labels("pageTitle")}</h1>
+        <div
+          className={`container ${styles.pageContainer}`}
+          role="group"
+          aria-labelledby="pageHeading"
+        >
+          <h1 id="pageHeading" className={styles.pageHeading}>
+            {Labels("pageTitle")}
+          </h1>
           <QuestionTypeBuilder
             lables={Labels("typeOptions")}
             lableFunction={Labels}
             callback={this.typeChange}
             defaultSelected={this.state.questionType}
+            className={styles.questionTypeBuilder}
           >
-            <label id="questionTypeLabel">{Labels("type")}</label>
+            <label id="questionTypeLabel" className={styles.questionTypeLabel}>
+              {Labels("type")}
+            </label>
           </QuestionTypeBuilder>
           <WrappedInput
             labelId="questionTitle"
@@ -40,6 +55,7 @@ class AddQuestion extends React.Component {
             labelled
             aria-labelledby="questionTitle"
             placeholder={Labels("titlePH")}
+            wrapperProps={commonInputWrapperProps}
           />
           <WrappedInput
             labelId="questionDescription"
@@ -47,17 +63,10 @@ class AddQuestion extends React.Component {
             labelled
             aria-labelledby="questionDescription"
             placeholder={Labels("descriptionPH")}
+            wrapperProps={commonInputWrapperProps}
           />
           {this.state.questionType === MULTIPLE_CHOICE ? (
-            <div>
-              <label id="answers">{Labels("answer")}</label>
-              {Labels("answerPH").map((val, ind) => (
-                <div key={`questionTypeItem${ind}`}>
-                  <Input placeholder={val} />
-                  <Input type="radio" name={`answer`} />
-                </div>
-              ))}
-            </div>
+            <Answers labelFunction={Labels} />
           ) : null}
           {this.state.questionType === PASSAGE_TYPE ? (
             <WrappedInput
@@ -66,6 +75,7 @@ class AddQuestion extends React.Component {
               labelled
               aria-labelledby="idealAnswer"
               placeholder={Labels("idealAnswerPH")}
+              wrapperProps={commonInputWrapperProps}
             />
           ) : null}
           <WrappedInput
@@ -74,14 +84,9 @@ class AddQuestion extends React.Component {
             labelled
             aria-labelledby="instructions"
             placeholder={Labels("instructionsPH")}
+            wrapperProps={commonInputWrapperProps}
           />
-          <div>
-            <div>{Labels("submitInstructions")}</div>
-            <div>
-              <button type="submit">{Labels("submit")}</button>
-              <button type="cancel">{Labels("cancel")}</button>
-            </div>
-          </div>
+          <SubmissionPanel lableFunction={Labels} />
         </div>
       </form>
     );

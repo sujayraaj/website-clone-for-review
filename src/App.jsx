@@ -8,7 +8,7 @@ import AddQuestion from "./Components/AddQuestion";
 class App extends Component {
   render() {
     return (
-      <div>
+      <div className={styles.App}>
         <div className={`container ${styles.container || ""}`}>
           <Header />
           <Switch>

@@ -1,14 +1,16 @@
 import React from "react";
 import { WrappedInput } from "../../common/Input";
+import styles from "./RadioGroup.css";
 
 export const RadioGroup = ({
   children,
   lables,
   lableFunction,
   callback,
-  defaultSelected
+  defaultSelected,
+  className
 }) => (
-  <div role="group" aria-labelledby="questionTypeLabel">
+  <div role="group" aria-labelledby="questionTypeLabel" className={className}>
     {children}
     {lables.map((val, idx) => (
       <WrappedInput
@@ -22,6 +24,8 @@ export const RadioGroup = ({
         placeholder={lableFunction("titlePH")}
         checked={defaultSelected === idx}
         changeCallback={callback(idx)}
+        labelClass={styles.radioGroupLabel}
+        flipped
       />
     ))}
   </div>

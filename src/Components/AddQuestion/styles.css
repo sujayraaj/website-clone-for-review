@@ -1,0 +1,25 @@
+.pageHeading {
+  font-size: 20.5px;
+  letter-spacing: 0px;
+  color: #5f5f5f;
+  margin-bottom: 30px;
+}
+
+.pageContainer {
+  max-width: 930px;
+  margin-top: 64px;
+  box-sizing: content-box;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.questionTypeLabel {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.questionTypeBuilder {
+  margin-bottom: 18px;
+}

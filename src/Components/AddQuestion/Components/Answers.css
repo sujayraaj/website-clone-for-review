@@ -1,0 +1,11 @@
+.checkBoxWrapper {
+  display: flex;
+}
+
+.checkBoxWrapper input {
+  width: initial;
+}
+
+.answerContainer {
+  margin-bottom: 30px;
+}

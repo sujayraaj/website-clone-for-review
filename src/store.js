@@ -38,6 +38,7 @@ const labels = {
       "Type Option B here"
     ],
     idealAnswer: "Ideal Answer",
+    rightAnswer: "Right Answer",
     idealAnswerPH: "Type Your Answer Here",
     instructions: "Instructions",
     instructionsPH:
