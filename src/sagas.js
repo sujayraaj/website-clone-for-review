@@ -1,15 +1,27 @@
-import { put, takeLatest } from "redux-saga/effects";
+import { call, takeLatest, put } from "redux-saga/effects";
+import { FETCH_QUESTION_DATA } from "./constants";
+import { triggerServerRequest } from "./utils";
+import { fetchQuestionDataSuccess } from "./actions";
 
-function* fetchUser(action) {
-  try {
-    yield put({ type: "ACTION1", payload: "ACTION IS 1" });
-  } catch (e) {
-    yield put({ type: "ACTION2" });
-  }
+function* fetchQuestionData(action) {
+  /* const data = yield call(
+    triggerServerRequest,
+    {
+      url: "http://localhost:3001/questions"
+    },
+    res => res,
+    () => null,
+    true
+  );
+  console.log(data.response); */
+
+  const data = JSON.parse(window.localStorage.getItem("QUESTIONS"));
+  console.log("fetchQuestionData");
+  yield put(fetchQuestionDataSuccess(data));
 }
 
-function* mySaga() {
-  yield takeLatest("ACTION3", fetchUser);
+function* fetchQuestionDataSaga() {
+  yield takeLatest(FETCH_QUESTION_DATA, fetchQuestionData);
 }
 
-export default mySaga;
+export default fetchQuestionDataSaga;

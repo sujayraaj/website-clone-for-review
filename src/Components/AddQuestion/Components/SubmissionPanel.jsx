@@ -1,7 +1,12 @@
 import React from "react";
 import styles from "./SubmissionPanel.css";
 
-export default ({ lableFunction }) => (
+export default ({
+  lableFunction,
+  submitCallback,
+  cancelCallback,
+  updateOnSubmit
+}) => (
   <div className={`container ${styles.submissionPanel}`}>
     <div
       className="row justify-content-space-evenly"
@@ -18,7 +23,7 @@ export default ({ lableFunction }) => (
                 type="button"
                 className="btn btn-secondary"
                 style={{ width: "95px", height: "46px" }}
-                type="cancel"
+                onClick={cancelCallback}
               >
                 {lableFunction("cancel")}
               </button>
@@ -28,9 +33,11 @@ export default ({ lableFunction }) => (
                 type="button"
                 className="btn btn-primary"
                 style={{ width: "95px", height: "46px" }}
-                type="submit"
+                onClick={submitCallback}
               >
-                {lableFunction("submit")}
+                {updateOnSubmit
+                  ? lableFunction("Update")
+                  : lableFunction("submit")}
               </button>
             </div>
           </div>

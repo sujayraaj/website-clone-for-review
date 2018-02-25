@@ -1,8 +1,13 @@
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 
-import reducer from "./reducers";
-import mySaga from "./sagas";
+import reducer, {
+  QuestionListReducer,
+  AddEditQuestionReducer,
+  questionListDataReducer
+} from "./reducers";
+
+import rootSaga from "./rootSaga";
 
 import createHistory from "history/createBrowserHistory";
 
@@ -49,9 +54,41 @@ const labels = {
     cancel: "Cancel"
   }
 };
+const questionListData = Array.apply(null, { length: 10 }).map((val, ind) => ({
+  questionType: ind % 3,
+  questionTitle: `Question Title: ${ind}`,
+  questionDescription: `Question description: ${ind}`,
+  answerOptions:
+    ind % 3 === 0
+      ? [
+          `AnswerOption: 1 for Question ${ind}`,
+          `AnswerOption: 2 for Question ${ind}`,
+          `AnswerOption: 3 for Question ${ind}`,
+          `AnswerOption: 4 for Question ${ind}`
+        ]
+      : null,
+  idealAnswer: ind % 3 === 2 ? `Ideal answer for Question: ${ind}` : null,
+  instructions: `Question instructions: ${ind}`,
+  assignedTo: []
+}));
+const initialState = {
+  reducer: "",
+  router: {},
+  labels: labels,
+  questionListData: []
+};
+
 export const store = createStore(
-  combineReducers({ reducer, router: routerReducer, labels: () => labels }),
+  combineReducers({
+    reducer,
+    router: routerReducer,
+    labels: (state = {}) => state,
+    questionListData: questionListDataReducer,
+    questionListPage: QuestionListReducer,
+    addQuestionsPage: AddEditQuestionReducer
+  }),
+  initialState,
   composeEnhancers(applyMiddleware(...middleWares))
 );
 
-sagaMiddleware.run(mySaga);
+sagaMiddleware.run(rootSaga);

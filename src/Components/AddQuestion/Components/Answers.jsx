@@ -2,7 +2,12 @@ import React from "react";
 import Input from "../../common/Input";
 import styles from "./Answers.css";
 
-export const Answers = ({ labelFunction }) => (
+export const Answers = ({
+  labelFunction,
+  values,
+  rightAnswer,
+  changeCallback
+}) => (
   <div className={`container ${styles.answerContainer || ""}`}>
     <div className="row">
       <div className="col-sm-10">
@@ -20,6 +25,8 @@ export const Answers = ({ labelFunction }) => (
             type="text"
             aria-label="Checkbox for following text input"
             style={{ marginBottom: "10px" }}
+            value={values[ind]}
+            onChange={changeCallback(`answerOptions`, ind)}
           />
         </div>
         <div
@@ -31,6 +38,8 @@ export const Answers = ({ labelFunction }) => (
             type="checkbox"
             name={`answer`}
             aria-label="Text input with checkbox"
+            checked={rightAnswer[ind]}
+            onChange={changeCallback(`rightAnswer`, ind, true)}
           />
         </div>
       </div>

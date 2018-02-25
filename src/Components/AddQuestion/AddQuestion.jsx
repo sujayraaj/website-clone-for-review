@@ -7,21 +7,79 @@ import { RadioGroup as QuestionTypeBuilder } from "./Components/RadioGroup";
 import Answers from "./Components/Answers";
 import SubmissionPanel from "./Components/SubmissionPanel";
 import styles from "./styles.css";
-
+import {
+  changeQuestionType as changeQuestionTypeAction,
+  setStateKey as setStateKeyAction,
+  loadQuestion as loadQuestionAction,
+  cancel as cancelAction,
+  submitQuestion as submitQuestionAction
+} from "./actions";
 import { MULTIPLE_CHOICE, PASSAGE_TYPE } from "./constants";
 
 class AddQuestion extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      questionType: MULTIPLE_CHOICE
-    };
     this.typeChange = this.typeChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.cancel = this.cancel.bind(this);
+    this.submit = this.submit.bind(this);
+  }
+  matchAndFindData(questionData = []) {
+    const { match } = this.props;
+    console.log("match.params.questionId", match.params.questionId);
+    if (match.params.questionId) {
+      console.log("QUESTION DATA", questionData);
+      const data = questionData.find(val => {
+        console.log(match.params.questionId, val.id);
+        return val.id == match.params.questionId;
+      });
+      console.log(data);
+      if (data) this.props.loadQuestion(data);
+    }
+  }
+  componentDidMount() {
+    this.matchAndFindData(this.props.questionData);
+  }
+  componentWillReceiveProps(nextProps) {
+    console.log(
+      this.props.location.pathName !== nextProps.location.pathName,
+      "wrp"
+    );
+    if (
+      (this.props.questionData.length == 0 &&
+        nextProps.questionData.length != 0) ||
+      this.props.location.pathName !== nextProps.location.pathName
+    ) {
+      this.matchAndFindData(nextProps.questionData);
+      console.log("LOLLOLOLOLO");
+    }
   }
   typeChange(index) {
     return e => {
-      if (e.target.checked) this.setState({ questionType: index });
+      if (e.target.checked) this.props.changeQuestionType(index);
     };
+  }
+  handleInputChange(key, index = null, checkBox = false) {
+    return e => {
+      this.props.setStateKey(
+        key,
+        checkBox ? e.target.checked : e.target.value,
+        index
+      );
+    };
+  }
+  submit(evt) {
+    evt.preventDefault();
+    this.props.submit(this.props);
+    this.props.cancel();
+    this.props.history.push("/question-list");
+    return null;
+  }
+  cancel(evt) {
+    evt.preventDefault();
+    this.props.cancel();
+    this.props.history.push("/question-list");
+    return null;
   }
   render() {
     const Labels = getLabels(this.props.labels || {});
@@ -42,8 +100,9 @@ class AddQuestion extends React.Component {
             lables={Labels("typeOptions")}
             lableFunction={Labels}
             callback={this.typeChange}
-            defaultSelected={this.state.questionType}
+            defaultSelected={this.props.questionType}
             className={styles.questionTypeBuilder}
+            rightAnswer={this.props.rightAnswer}
           >
             <label id="questionTypeLabel" className={styles.questionTypeLabel}>
               {Labels("type")}
@@ -56,6 +115,8 @@ class AddQuestion extends React.Component {
             aria-labelledby="questionTitle"
             placeholder={Labels("titlePH")}
             wrapperProps={commonInputWrapperProps}
+            value={this.props.questionTitle}
+            changeCallback={this.handleInputChange("questionTitle")}
           />
           <WrappedInput
             labelId="questionDescription"
@@ -64,11 +125,18 @@ class AddQuestion extends React.Component {
             aria-labelledby="questionDescription"
             placeholder={Labels("descriptionPH")}
             wrapperProps={commonInputWrapperProps}
+            value={this.props.questionDescription}
+            changeCallback={this.handleInputChange("questionDescription")}
           />
-          {this.state.questionType === MULTIPLE_CHOICE ? (
-            <Answers labelFunction={Labels} />
+          {this.props.questionType === MULTIPLE_CHOICE ? (
+            <Answers
+              labelFunction={Labels}
+              values={this.props.answerOptions}
+              rightAnswer={this.props.rightAnswer}
+              changeCallback={this.handleInputChange}
+            />
           ) : null}
-          {this.state.questionType === PASSAGE_TYPE ? (
+          {this.props.questionType === PASSAGE_TYPE ? (
             <WrappedInput
               labelId="idealAnswer"
               label={Labels("idealAnswer")}
@@ -76,6 +144,8 @@ class AddQuestion extends React.Component {
               aria-labelledby="idealAnswer"
               placeholder={Labels("idealAnswerPH")}
               wrapperProps={commonInputWrapperProps}
+              value={this.props.idealAnswer}
+              changeCallback={this.handleInputChange("idealAnswer")}
             />
           ) : null}
           <WrappedInput
@@ -85,15 +155,78 @@ class AddQuestion extends React.Component {
             aria-labelledby="instructions"
             placeholder={Labels("instructionsPH")}
             wrapperProps={commonInputWrapperProps}
+            value={this.props.instructions}
+            changeCallback={this.handleInputChange("instructions")}
           />
-          <SubmissionPanel lableFunction={Labels} />
+          <SubmissionPanel
+            lableFunction={Labels}
+            submitCallback={this.submit}
+            cancelCallback={this.cancel}
+            updateOnSubmit={!!this.props.match.params.questionId}
+          />
         </div>
       </form>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  labels: pathOr({}, "AddQuestion", state.labels)
+const mapStateToProps = state => {
+  return {
+    labels: pathOr({}, "AddQuestion", state.labels),
+    questionType: state.addQuestionsPage.questionType,
+    id: state.addQuestionsPage.id,
+    questionTitle: state.addQuestionsPage.questionTitle || "",
+    questionDescription: state.addQuestionsPage.questionDescription || "",
+    answerOptions: state.addQuestionsPage.answerOptions || [],
+    rightAnswer: state.addQuestionsPage.rightAnswer || [],
+    idealAnswer: state.addQuestionsPage.idealAnswer || "",
+    instructions: state.addQuestionsPage.instructions || "",
+    questionData: state.questionListData || [],
+    isDataAvailable: state.questionListData.length !== 0
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  changeQuestionType: i => {
+    dispatch(changeQuestionTypeAction(i));
+  },
+  setStateKey: (key, value, index) => {
+    dispatch(setStateKeyAction(key, value, index));
+  },
+  loadQuestion: data => {
+    dispatch(loadQuestionAction(data));
+  },
+  cancel: () => {
+    dispatch(cancelAction());
+  },
+  submit: props => {
+    const {
+      questionType,
+      questionTitle,
+      questionDescription,
+      answerOptions,
+      rightAnswer,
+      idealAnswer,
+      instructions,
+      id,
+      match
+    } = props;
+    dispatch(
+      submitQuestionAction(
+        {
+          questionType,
+          questionTitle,
+          questionDescription,
+          answerOptions,
+          rightAnswer,
+          idealAnswer,
+          instructions,
+          id
+        },
+        !!match.params.questionId
+      )
+    );
+  }
 });
-export default connect(mapStateToProps)(AddQuestion);
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddQuestion);

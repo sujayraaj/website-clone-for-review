@@ -1,0 +1,56 @@
+.Assign {
+  width: 110px;
+  height: 47px;
+}
+
+.Author {
+  width: 164px;
+  height: 47px;
+}
+
+.tile {
+  box-shadow: 5px 5px 3px 0px #e2e2e2;
+  margin-bottom: 10px;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.flexAuxClass {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.alignItemsAux {
+  align-items: center;
+}
+
+.selectAll {
+  font-size: 12px;
+}
+
+.rightSection {
+  background: #fafafa;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+}
+
+.label,
+.input {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.label {
+  margin-left: 5px;
+}
+
+.row {
+  height: 100%;
+}
