@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import pathOr from "lodash/fp/pathOr";
+import PropTypes from "prop-types";
 import { getLabels } from "../../utils";
 import { WrappedInput } from "../common/Input";
 import { RadioGroup as QuestionTypeBuilder } from "./Components/RadioGroup";
@@ -160,6 +161,33 @@ class AddQuestion extends React.Component {
     );
   }
 }
+
+AddQuestion.propTypes = {
+  labels: PropTypes.object,
+  questionType: PropTypes.any,
+  id: PropTypes.any,
+  questionTitle: PropTypes.string,
+  questionDescription: PropTypes.string,
+  answerOptions: PropTypes.array,
+  rightAnswer: PropTypes.array,
+  idealAnswer: PropTypes.string,
+  instructions: PropTypes.string,
+  questionData: PropTypes.array,
+  isDataAvailable: PropTypes.bool
+};
+
+AddQuestion.defaultProps = {
+  questionType: "",
+  id: "",
+  questionTitle: "",
+  questionDescription: "",
+  answerOptions: [],
+  rightAnswer: [],
+  idealAnswer: "",
+  instructions: "",
+  questionData: [],
+  isDataAvailable: false
+};
 
 const mapStateToProps = state => {
   return {

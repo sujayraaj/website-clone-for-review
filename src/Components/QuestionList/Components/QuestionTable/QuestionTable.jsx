@@ -1,10 +1,10 @@
 import React from "react";
 import Input from "../../../common/Input";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import styles from "./QuestionTable.css";
 import {
   MULTIPLE_CHOICE,
-  PASSAGE_TYPE,
   SUBMISSION_TYPE
 } from "../../../AddQuestion/constants";
 
@@ -52,5 +52,19 @@ export const QuestionTable = ({
     ))}
   </div>
 );
+
+QuestionTable.propTypes = {
+  selectedQuestions: PropTypes.array,
+  questionList: PropTypes.array,
+  callback: PropTypes.func,
+  allSelected: PropTypes.bool,
+  labelFunction: PropTypes.func
+};
+
+QuestionTable.defaultProps = {
+  selectedQuestions: [],
+  questionList: [],
+  allSelected: false
+};
 
 export default QuestionTable;

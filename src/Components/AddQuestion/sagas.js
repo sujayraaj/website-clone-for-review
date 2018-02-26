@@ -1,6 +1,5 @@
-import { takeLatest, call, put } from "redux-saga/effects";
+import { takeLatest, put } from "redux-saga/effects";
 import { SUBMIT_ADD_EDIT_QUESTION } from "./constants";
-import { triggerServerRequest } from "../../utils";
 import { addQuestion } from "./actions";
 import { QUESTIONS_LOCALSTORAGE_KEY } from "../../constants";
 

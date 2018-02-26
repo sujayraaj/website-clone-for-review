@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import RenderWithoutWrapper from "../RenderWithoutWrapper";
 import ClassedWrapper from "../ClassedWrapper";
 
@@ -67,6 +68,29 @@ export const Input = ({
       } ${className || ""}`}
     />
   );
+};
+
+Input.propTypes = {
+  labelId: PropTypes.string,
+  labelClass: PropTypes.string,
+  label: PropTypes.string,
+  labelled: PropTypes.bool,
+  type: PropTypes.string,
+  id: PropTypes.string,
+  changeCallback: PropTypes.func,
+  className: PropTypes.string,
+  flipped: PropTypes.bool
+};
+
+PropTypes.defaultProps = {
+  labelId: "",
+  labelClass: "",
+  label: "",
+  labelled: false,
+  type: "",
+  id: "",
+  className: "",
+  flipped: false
 };
 
 export default Input;

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Input from "../../../common/Input";
 import styles from "./Answers.css";
 
@@ -46,5 +47,17 @@ export const Answers = ({
     ))}
   </div>
 );
+
+Answers.propTypes = {
+  labelFunction: PropTypes.func,
+  values: PropTypes.array,
+  rightAnswer: PropTypes.array,
+  changeCallback: PropTypes.func
+};
+
+Answers.defaultProps = {
+  values: [],
+  rightAnswer: []
+};
 
 export default Answers;

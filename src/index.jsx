@@ -9,11 +9,6 @@ import initialState from "./Configuration/initialState";
 import initializeLocalStorage from "./Configuration/localStorageUtil";
 import { ConnectedRouter } from "react-router-redux";
 
-import {
-  QUESTIONS_LOCALSTORAGE_KEY,
-  LABELS_LOCALSTORAGE_KEY
-} from "./constants";
-
 import registerServiceWorker from "./registerServiceWorker";
 
 const store = configureStore(initialState, history);

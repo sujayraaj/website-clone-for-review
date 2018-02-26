@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import QuestionSelection from "./Components/QuestionSelection";
 import QuestionTable from "./Components/QuestionTable";
 import { selectAllQuestions } from "./actions";
@@ -43,6 +44,20 @@ export class QuestionList extends React.Component {
     );
   }
 }
+
+QuestionList.propTypes = {
+  questionList: PropTypes.array,
+  allSelected: PropTypes.bool,
+  selectedQuestions: PropTypes.array,
+  labels: PropTypes.object
+};
+
+QuestionList.defaultProps = {
+  questionList: [],
+  allSelected: false,
+  selectedQuestions: [],
+  labels: {}
+};
 
 const mapStateToProps = state => ({
   questionList: state.questionListData,

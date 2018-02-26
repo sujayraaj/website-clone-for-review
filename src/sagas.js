@@ -1,11 +1,11 @@
-import { call, takeLatest, put } from "redux-saga/effects";
+import { takeLatest, put } from "redux-saga/effects";
 import {
   FETCH_QUESTION_DATA,
   FETCH_LABELS_DATA,
   LABELS_LOCALSTORAGE_KEY,
   QUESTIONS_LOCALSTORAGE_KEY
 } from "./constants";
-import { triggerServerRequest } from "./utils";
+
 import { fetchQuestionDataSuccess, fetchLabelsSuccess } from "./actions";
 
 function* fetchQuestionData() {

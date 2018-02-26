@@ -2,7 +2,13 @@ import React from "react";
 import Input from "../../../common/Input";
 import { Link } from "react-router-dom";
 import styles from "./QuestionSelection.css";
-export default ({ allSelected, selectAllCallback, labelFunction }) => (
+import PropTypes from "prop-types";
+
+export const QuestionSelected = ({
+  allSelected,
+  selectAllCallback,
+  labelFunction
+}) => (
   <div className={`container ${styles.tile}`}>
     <div className={`row ${styles.row}`}>
       <div
@@ -21,7 +27,7 @@ export default ({ allSelected, selectAllCallback, labelFunction }) => (
           type="checkbox"
           name="selectAll"
           labelId={`selectAll${"selectAll"}`}
-          label={"selectAll"}
+          label={labelFunction("selectAll")}
           labelled
           aria-labelledby={`selectAll${"selectAll"}`}
           checked={allSelected}
@@ -50,3 +56,15 @@ export default ({ allSelected, selectAllCallback, labelFunction }) => (
     </div>
   </div>
 );
+
+QuestionSelected.propTypes = {
+  allSelected: PropTypes.bool,
+  selectAllCallback: PropTypes.func,
+  labelFunction: PropTypes.func
+};
+
+QuestionSelected.defaultProps = {
+  allSelected: false
+};
+
+export default QuestionSelected;

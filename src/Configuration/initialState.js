@@ -168,7 +168,8 @@ export const initialLabelData = {
     questionType: "QUESTION TYPE",
     mcq: "MCQ (Quiz)",
     submission: "Submission",
-    passage: "Passage (text)"
+    passage: "Passage (text)",
+    selectAll: "Select All"
   }
 };
 
