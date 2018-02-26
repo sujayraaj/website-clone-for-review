@@ -39,6 +39,7 @@
   justify-content: center;
   flex-direction: row;
   align-items: center;
+  border-left: 1px solid #e2e2e2;
 }
 
 .label,

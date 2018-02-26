@@ -3,39 +3,48 @@ import { connect } from "react-redux";
 import QuestionSelection from "./Components/QuestionSelection";
 import QuestionTable from "./Components/QuestionTable";
 import { selectAllQuestions } from "./actions";
-import { setStateKey as setStateKeyAction } from "../AddQuestion/actions";
+import { setStateKeyTable as setStateKeyTableAction } from "./actions";
 
-export const QuestionList = ({
-  questionList,
-  selectAll,
-  allSelected,
-  setStateKey
-}) => {
-  const handleInputChange = (key, index = null, checkBox = false) => {
+export class QuestionList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+  handleInputChange(key, index = null, checkBox = true) {
+    console.log("CALLED");
     return e => {
-      setStateKey(key, checkBox ? e.target.checked : e.target.value, index);
+      console.log("THIS IS ALSO CALLED");
+      this.props.setStateKey(
+        key,
+        checkBox ? e.target.checked : e.target.value,
+        index
+      );
     };
-  };
-
-  return (
-    <div>
-      <h1>Question List</h1>
-      <QuestionSelection
-        selectAllCallback={selectAll}
-        allSelected={allSelected}
-      />
-      <QuestionTable
-        callback={handleInputChange}
-        questionList={questionList}
-        allSelected={allSelected}
-      />
-    </div>
-  );
-};
+  }
+  render() {
+    const { questionList, selectAll, allSelected } = this.props;
+    return (
+      <div>
+        <h1>Question List</h1>
+        <QuestionSelection
+          selectAllCallback={selectAll}
+          allSelected={allSelected}
+        />
+        {console.log(this.handleInputChange)}
+        <QuestionTable
+          callback={this.handleInputChange}
+          questionList={questionList}
+          allSelected={allSelected}
+        />
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = state => ({
   questionList: state.questionListData,
-  allSelected: state.questionListPage.allSelected
+  allSelected: state.questionListPage.allSelected,
+  selectedQuestions: state.questionListPage.selectedQuestions || []
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -43,7 +52,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(selectAllQuestions());
   },
   setStateKey: (key, value, index) => {
-    dispatch(setStateKeyAction(key, value, index));
+    console.log("INSIDE ACTION");
+    dispatch(setStateKeyTableAction(key, value, index));
   }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionList);

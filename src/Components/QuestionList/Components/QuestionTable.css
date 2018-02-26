@@ -1,0 +1,33 @@
+.tile {
+  box-shadow: 5px 5px 3px 0px #e2e2e2;
+  margin-bottom: 10px;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+  height: 72px;
+  align-items: center;
+  margin: 0;
+  margin-bottom: 10px;
+  text-decoration: none;
+}
+.tile:hover {
+  text-decoration: none;
+}
+
+.serialNumber,
+.questionType {
+  text-align: center;
+  background: #fafafa;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid #e2e2e2;
+}
+
+.questionType {
+  border-left: 1px solid #e2e2e2;
+}
+
+.questionContent div {
+  padding: 0 10px;
+}

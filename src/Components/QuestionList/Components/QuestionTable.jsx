@@ -1,6 +1,12 @@
 import React from "react";
 import Input from "../../common/Input";
 import { Link } from "react-router-dom";
+import styles from "./QuestionTable.css";
+import {
+  MULTIPLE_CHOICE,
+  PASSAGE_TYPE,
+  SUBMISSION_TYPE
+} from "../../AddQuestion/constants";
 
 export const QuestionTable = ({
   selectedQuestions = [],
@@ -8,30 +14,36 @@ export const QuestionTable = ({
   callback,
   allSelected
 }) => (
-  <div>
+  <div className="container">
     {questionList.map((val, ind) => (
-      <div
-        key={"questionTableItem" + ind}
-        style={{
-          border: "1px solid black",
-          background: ind % 2 == 0 ? "lightblue" : "pink"
-        }}
-      >
-        <div>
+      <div key={"questionTableItem" + ind} className={`row`}>
+        <div className="col-sm-1">
           <Input
-            type="checkBox"
+            type="checkbox"
             name={`selectedQuestion${ind}`}
-            checked={allSelected || selectedQuestions.indexOf(ind) !== -1}
-            changeCallback={callback}
+            checked={allSelected || selectedQuestions[ind]}
+            changeCallback={callback("selectedQuestions", ind)}
           />
         </div>
-        <Link to={`/add-edit-question/${val.id}/`}>
-          <div>
-            <div>S.No {ind + 1}</div>
-            <div>{JSON.stringify(val)}</div>
-            <div>
+        <Link className={`col-sm-11`} to={`/add-edit-question/${val.id}/`}>
+          <div className={`row  ${styles.tile}`}>
+            <div className={`col-sm-1 ${styles.serialNumber}`}>
+              <div>S.No</div>
+              <div>{ind + 1}</div>
+            </div>
+            <div className={`col-sm-9 ${styles.questionContent}`}>
+              <div>{val.questionTitle}</div>
+              <div>{val.questionDescription}</div>
+            </div>
+            <div className={`col-sm-2 ${styles.questionType}`}>
               <div>QUESTION TYPE</div>
-              <div>{val.questionType}</div>
+              <div>
+                {val.questionType == MULTIPLE_CHOICE
+                  ? "MCQ (Quiz)"
+                  : val.questionType == SUBMISSION_TYPE
+                    ? "Submission"
+                    : "Passage (text)"}
+              </div>
             </div>
           </div>
         </Link>

@@ -1,4 +1,7 @@
-import { SELECT_ALL_QUESTIONS } from "./Components/QuestionList/constants";
+import {
+  SELECT_ALL_QUESTIONS,
+  SET_STATE_KEY_TABLE
+} from "./Components/QuestionList/constants";
 import {
   MULTIPLE_CHOICE,
   CHANGE_QUESTION_TYPE,
@@ -37,6 +40,19 @@ export const QuestionListReducer = (
         ...state,
         allSelected: !isAllSelected
       };
+    case SET_STATE_KEY_TABLE:
+      if (payLoad.index !== null) {
+        const arr = [...(state[payLoad.key] || [])];
+        arr[payLoad.index] = payLoad.value;
+        return {
+          ...state,
+          [payLoad.key]: [...arr]
+        };
+      }
+      return {
+        ...state,
+        [payLoad.key]: payLoad.value
+      };
     default:
       return state;
   }
@@ -72,7 +88,7 @@ export const AddEditQuestionReducer = (
       };
     case SET_STATE_KEY:
       if (payLoad.index !== null) {
-        const arr = [...state[payLoad.key]];
+        const arr = [...(state[payLoad.key] || [])];
         arr[payLoad.index] = payLoad.value;
         return {
           ...state,

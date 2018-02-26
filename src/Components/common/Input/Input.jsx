@@ -61,6 +61,7 @@ export const Input = ({
     <input
       type={type}
       {...otherProps}
+      onChange={changeCallback}
       className={`${
         type === "checkbox" || type === "radio" ? "" : "form-control"
       } ${className || ""}`}
