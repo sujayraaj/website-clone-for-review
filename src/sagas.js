@@ -1,9 +1,14 @@
 import { call, takeLatest, put } from "redux-saga/effects";
-import { FETCH_QUESTION_DATA } from "./constants";
+import {
+  FETCH_QUESTION_DATA,
+  FETCH_LABELS_DATA,
+  LABELS_LOCALSTORAGE_KEY,
+  QUESTIONS_LOCALSTORAGE_KEY
+} from "./constants";
 import { triggerServerRequest } from "./utils";
-import { fetchQuestionDataSuccess } from "./actions";
+import { fetchQuestionDataSuccess, fetchLabelsSuccess } from "./actions";
 
-function* fetchQuestionData(action) {
+function* fetchQuestionData() {
   /* const data = yield call(
     triggerServerRequest,
     {
@@ -15,13 +20,21 @@ function* fetchQuestionData(action) {
   );
   console.log(data.response); */
 
-  const data = JSON.parse(window.localStorage.getItem("QUESTIONS"));
-  console.log("fetchQuestionData");
+  const data = JSON.parse(
+    window.localStorage.getItem(QUESTIONS_LOCALSTORAGE_KEY)
+  );
   yield put(fetchQuestionDataSuccess(data));
 }
 
-function* fetchQuestionDataSaga() {
+export function* fetchQuestionDataSaga() {
   yield takeLatest(FETCH_QUESTION_DATA, fetchQuestionData);
 }
 
-export default fetchQuestionDataSaga;
+function* fetchLabelsData() {
+  const data = JSON.parse(window.localStorage.getItem(LABELS_LOCALSTORAGE_KEY));
+  yield put(fetchLabelsSuccess(data));
+}
+
+export function* fetchLabelsSaga() {
+  yield takeLatest(FETCH_LABELS_DATA, fetchLabelsData);
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import { WrappedInput } from "../../common/Input";
+import { WrappedInput } from "../../../common/Input";
 import styles from "./RadioGroup.css";
 
 export const RadioGroup = ({

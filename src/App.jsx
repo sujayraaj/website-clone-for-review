@@ -5,11 +5,15 @@ import Header from "./Components/Header";
 import styles from "./App.css";
 import AddQuestion from "./Components/AddQuestion";
 import QuestionList from "./Components/QuestionList";
-import { fetchQuestionData as fetchQuestionDataAction } from "./actions";
+import {
+  fetchQuestionData as fetchQuestionDataAction,
+  fetchLabels as fetchLabelAction
+} from "./actions";
 
 class App extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchQuestionData();
+    this.props.fetchLabels();
   }
   render() {
     return (
@@ -37,6 +41,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchQuestionData: () => {
     dispatch(fetchQuestionDataAction());
+  },
+  fetchLabels: () => {
+    dispatch(fetchLabelAction());
   }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(App);

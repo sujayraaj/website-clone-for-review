@@ -4,6 +4,8 @@ import QuestionSelection from "./Components/QuestionSelection";
 import QuestionTable from "./Components/QuestionTable";
 import { selectAllQuestions } from "./actions";
 import { setStateKeyTable as setStateKeyTableAction } from "./actions";
+import { getLabels } from "../../utils";
+import styles from "./QuestionList.css";
 
 export class QuestionList extends React.Component {
   constructor(props) {
@@ -11,9 +13,7 @@ export class QuestionList extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
   handleInputChange(key, index = null, checkBox = true) {
-    console.log("CALLED");
     return e => {
-      console.log("THIS IS ALSO CALLED");
       this.props.setStateKey(
         key,
         checkBox ? e.target.checked : e.target.value,
@@ -22,19 +22,22 @@ export class QuestionList extends React.Component {
     };
   }
   render() {
-    const { questionList, selectAll, allSelected } = this.props;
+    const { questionList, selectAll, allSelected, labels } = this.props;
+    const Labels = getLabels(labels || {});
+
     return (
       <div>
-        <h1>Question List</h1>
+        <h1 className={styles.pageHeading}>{Labels("questionList")}</h1>
         <QuestionSelection
           selectAllCallback={selectAll}
           allSelected={allSelected}
+          labelFunction={Labels}
         />
-        {console.log(this.handleInputChange)}
         <QuestionTable
           callback={this.handleInputChange}
           questionList={questionList}
           allSelected={allSelected}
+          labelFunction={Labels}
         />
       </div>
     );
@@ -44,7 +47,8 @@ export class QuestionList extends React.Component {
 const mapStateToProps = state => ({
   questionList: state.questionListData,
   allSelected: state.questionListPage.allSelected,
-  selectedQuestions: state.questionListPage.selectedQuestions || []
+  selectedQuestions: state.questionListPage.selectedQuestions || [],
+  labels: state.labels.QuestionList || {}
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -52,7 +56,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(selectAllQuestions());
   },
   setStateKey: (key, value, index) => {
-    console.log("INSIDE ACTION");
     dispatch(setStateKeyTableAction(key, value, index));
   }
 });

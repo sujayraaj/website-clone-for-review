@@ -26,14 +26,10 @@ class AddQuestion extends React.Component {
   }
   matchAndFindData(questionData = []) {
     const { match } = this.props;
-    console.log("match.params.questionId", match.params.questionId);
     if (match.params.questionId) {
-      console.log("QUESTION DATA", questionData);
       const data = questionData.find(val => {
-        console.log(match.params.questionId, val.id);
         return val.id == match.params.questionId;
       });
-      console.log(data);
       if (data) this.props.loadQuestion(data);
     }
   }
@@ -41,17 +37,12 @@ class AddQuestion extends React.Component {
     this.matchAndFindData(this.props.questionData);
   }
   componentWillReceiveProps(nextProps) {
-    console.log(
-      this.props.location.pathName !== nextProps.location.pathName,
-      "wrp"
-    );
     if (
       (this.props.questionData.length == 0 &&
         nextProps.questionData.length != 0) ||
       this.props.location.pathName !== nextProps.location.pathName
     ) {
       this.matchAndFindData(nextProps.questionData);
-      console.log("LOLLOLOLOLO");
     }
   }
   typeChange(index) {

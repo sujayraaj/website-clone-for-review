@@ -11,7 +11,10 @@ import {
   ADD_QUESTION
 } from "./Components/AddQuestion/constants";
 
-import { FETCH_QUESTION_DATA_SUCCESS } from "./constants";
+import {
+  FETCH_QUESTION_DATA_SUCCESS,
+  FETCH_LABELS_DATA_SUCCESS
+} from "./constants";
 
 export default (state = "", { type, payload }) => {
   switch (type) {
@@ -35,7 +38,6 @@ export const QuestionListReducer = (
   switch (type) {
     case SELECT_ALL_QUESTIONS:
       const isAllSelected = state.allSelected;
-      console.log(state, isAllSelected);
       return {
         ...state,
         allSelected: !isAllSelected
@@ -117,6 +119,15 @@ export const questionListDataReducer = (state = [], { type, payLoad }) => {
     case FETCH_QUESTION_DATA_SUCCESS:
       return [...state, ...payLoad];
     case ADD_QUESTION:
+      return payLoad;
+    default:
+      return state;
+  }
+};
+
+export const labelReducer = (state = {}, { type, payLoad }) => {
+  switch (type) {
+    case FETCH_LABELS_DATA_SUCCESS:
       return payLoad;
     default:
       return state;

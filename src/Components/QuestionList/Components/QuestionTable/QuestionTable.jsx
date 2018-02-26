@@ -1,18 +1,19 @@
 import React from "react";
-import Input from "../../common/Input";
+import Input from "../../../common/Input";
 import { Link } from "react-router-dom";
 import styles from "./QuestionTable.css";
 import {
   MULTIPLE_CHOICE,
   PASSAGE_TYPE,
   SUBMISSION_TYPE
-} from "../../AddQuestion/constants";
+} from "../../../AddQuestion/constants";
 
 export const QuestionTable = ({
   selectedQuestions = [],
   questionList = [],
   callback,
-  allSelected
+  allSelected,
+  labelFunction
 }) => (
   <div className="container">
     {questionList.map((val, ind) => (
@@ -28,7 +29,7 @@ export const QuestionTable = ({
         <Link className={`col-sm-11`} to={`/add-edit-question/${val.id}/`}>
           <div className={`row  ${styles.tile}`}>
             <div className={`col-sm-1 ${styles.serialNumber}`}>
-              <div>S.No</div>
+              <div>{labelFunction("serialNo")}</div>
               <div>{ind + 1}</div>
             </div>
             <div className={`col-sm-9 ${styles.questionContent}`}>
@@ -36,13 +37,13 @@ export const QuestionTable = ({
               <div>{val.questionDescription}</div>
             </div>
             <div className={`col-sm-2 ${styles.questionType}`}>
-              <div>QUESTION TYPE</div>
+              <div>{labelFunction("questionType")}</div>
               <div>
                 {val.questionType == MULTIPLE_CHOICE
-                  ? "MCQ (Quiz)"
+                  ? labelFunction("mcq")
                   : val.questionType == SUBMISSION_TYPE
-                    ? "Submission"
-                    : "Passage (text)"}
+                    ? labelFunction("submission")
+                    : labelFunction("passage")}
               </div>
             </div>
           </div>
